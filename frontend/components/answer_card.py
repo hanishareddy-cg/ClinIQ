@@ -1,67 +1,81 @@
-
 import streamlit as st
 
-from frontend.utils.formatting import flag_color, fmt_datetime, source_type_icon
+from frontend.utils.formatting import fmt_datetime, source_type_icon
 
 
 def render_answer(answer: str, citations: list[dict]) -> None:
-    """Render the LLM answer with inline citation badges highlighted."""
     with st.chat_message("assistant", avatar="🏥"):
         st.markdown(answer)
 
     if not citations:
         return
 
-    st.divider()
-    st.caption("**Sources cited in this answer**")
+    st.markdown(
+        "<div style='font-size:0.78rem;font-weight:700;text-transform:uppercase;"
+        "letter-spacing:0.5px;color:#64748b;margin:1rem 0 0.5rem'>Sources</div>",
+        unsafe_allow_html=True,
+    )
 
     cols_per_row = 3
-    rows = [citations[i:i+cols_per_row] for i in range(0, len(citations), cols_per_row)]
-
+    rows = [citations[i:i + cols_per_row] for i in range(0, len(citations), cols_per_row)]
     for row in rows:
         cols = st.columns(len(row))
         for col, cit in zip(cols, row):
             with col:
-                _render_citation_badge(cit)
+                _render_citation_card(cit)
 
 
-def _render_citation_badge(cit: dict) -> None:
-    icon = source_type_icon(cit["source_type"])
-    label = cit.get("label", "")
+def _render_citation_card(cit: dict) -> None:
+    src = cit["source_type"]
+    icon = source_type_icon(src)
     cid = cit["id"]
-    flag = cit.get("flag")
-    value = cit.get("value", "")
+    label = cit.get("label", "")
+    value = cit.get("value", "") or ""
     unit = cit.get("unit", "") or ""
+    flag = cit.get("flag") or ""
+    ts = cit.get("timestamp")
 
-    with st.expander(f"{icon} [{cid}] {label}", expanded=False):
-        if cit["source_type"] == "lab":
-            flag_icon = flag_color(flag)
-            st.markdown(f"**Value:** {value} {unit} {flag_icon}")
-            if flag:
-                st.caption(f"Flag: {flag}")
-            ts = cit.get("timestamp")
-            if ts:
-                st.caption(f"Recorded: {fmt_datetime(ts)}")
+    card_class = "cit-card"
+    if flag and "abnormal" in flag.lower():
+        card_class += " abnormal"
+    elif src == "note":
+        card_class += " note"
+    elif src == "medication":
+        card_class += " med"
 
-        elif cit["source_type"] == "medication":
-            st.markdown(f"**Dose:** {value}")
-            if unit:
-                st.caption(f"Route: {unit}")
-            ts = cit.get("timestamp")
-            if ts:
-                st.caption(f"Started: {fmt_datetime(ts)}")
+    flag_html = ""
+    if flag:
+        flag_html = f'<div class="flag-abnormal">⚠ {flag.upper()}</div>'
 
-        elif cit["source_type"] == "vital":
-            st.markdown(f"**Value:** {value} {unit}")
-            ts = cit.get("timestamp")
-            if ts:
-                st.caption(f"Recorded: {fmt_datetime(ts)}")
+    ts_html = ""
+    if ts:
+        ts_html = f'<div class="cit-meta">🕐 {fmt_datetime(ts)}</div>'
 
-        elif cit["source_type"] == "diagnosis":
-            st.markdown(f"{value or label}")
+    value_html = ""
+    if value:
+        value_str = f"{value} {unit}".strip()
+        value_html = f'<div class="cit-value">{value_str}</div>'
 
-        elif cit["source_type"] == "note":
-            excerpt = cit.get("excerpt")
-            if excerpt:
-                st.markdown(f"> {excerpt}")
-            st.caption(f"Category: {cit.get('category', '')}")
+    excerpt_html = ""
+    if src == "note" and cit.get("excerpt"):
+        excerpt = cit["excerpt"][:120] + ("…" if len(cit["excerpt"]) > 120 else "")
+        excerpt_html = f'<div class="cit-value" style="font-style:italic">"{excerpt}"</div>'
+        category = cit.get("category", "")
+        if category:
+            ts_html = f'<div class="cit-meta">📄 {category}</div>'
+
+    st.markdown(
+        f"""
+        <div class="{card_class}">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+                <span class="cit-id">{icon} {cid}</span>
+                {flag_html}
+            </div>
+            <div class="cit-label">{label}</div>
+            {value_html}
+            {excerpt_html}
+            {ts_html}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
