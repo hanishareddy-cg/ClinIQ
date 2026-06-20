@@ -41,8 +41,8 @@ User Question
           └───────┬────────┘
                   ▼
          ┌────────────────┐
-         │   Groq LLM     │  Llama 3.3 70B · temperature=0.0
-         │ (free tier)    │
+         │  Ollama (local) │  Llama 3.2 · runs entirely on-device
+         │  no API calls   │
          └───────┬────────┘
                  ▼
         Cited answer + citations
@@ -55,7 +55,7 @@ User Question
 | Backend API | FastAPI + async SQLAlchemy |
 | Structured data | PostgreSQL 16 |
 | Clinical notes | Elasticsearch 8 (BM25) |
-| LLM synthesis | Groq — Llama 3.3 70B (free) |
+| LLM synthesis | Ollama — Llama 3.2 (fully local, no API) |
 | Frontend | Streamlit |
 | Containerization | Docker Compose |
 | CI | GitHub Actions |
@@ -84,7 +84,7 @@ User Question
 ### Prerequisites
 - Docker Desktop
 - Python 3.12
-- A free [Groq API key](https://console.groq.com) (no credit card required)
+- [Ollama](https://ollama.com) installed and running locally
 - MIMIC-III demo files from PhysioNet (place CSVs in `data/raw/`)
 
 ### 1. Start data services
@@ -96,8 +96,7 @@ docker compose up postgres elasticsearch -d
 ### 2. Set up environment
 
 ```bash
-cp .env.example .env
-# Edit .env and add your GROQ_API_KEY
+ollama pull llama3.2          # download the model (~2GB, one time)
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements-dev.txt
 ```
@@ -145,7 +144,7 @@ docker compose up --build
 backend/
 ├── api/routes/        # FastAPI endpoints: /query, /patients, /health
 ├── retrieval/         # Classifier, PG retriever, ES retriever, reranker, context builder
-├── llm/               # Groq client + prompt templates
+├── llm/               # Ollama client + prompt templates
 ├── models/            # SQLAlchemy ORM models + Pydantic schemas
 └── es/                # Elasticsearch index setup
 
