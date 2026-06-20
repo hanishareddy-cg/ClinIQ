@@ -10,72 +10,70 @@ def render_answer(answer: str, citations: list[dict]) -> None:
     if not citations:
         return
 
-    st.markdown(
-        "<div style='font-size:0.78rem;font-weight:700;text-transform:uppercase;"
-        "letter-spacing:0.5px;color:#64748b;margin:1rem 0 0.5rem'>Sources</div>",
-        unsafe_allow_html=True,
-    )
-
-    cols_per_row = 3
-    rows = [citations[i:i + cols_per_row] for i in range(0, len(citations), cols_per_row)]
-    for row in rows:
-        cols = st.columns(len(row))
-        for col, cit in zip(cols, row):
-            with col:
-                _render_citation_card(cit)
+    with st.expander(f"Sources ({len(citations)})", expanded=False):
+        cols_per_row = 3
+        rows = [citations[i:i + cols_per_row] for i in range(0, len(citations), cols_per_row)]
+        for row in rows:
+            cols = st.columns(len(row))
+            for col, cit in zip(cols, row):
+                with col:
+                    _render_citation_card(cit)
 
 
 def _render_citation_card(cit: dict) -> None:
-    src = cit["source_type"]
+    src  = cit["source_type"]
     icon = source_type_icon(src)
-    cid = cit["id"]
+    cid  = cit["id"]
     label = cit.get("label", "")
     value = cit.get("value", "") or ""
-    unit = cit.get("unit", "") or ""
-    flag = cit.get("flag") or ""
-    ts = cit.get("timestamp")
+    unit  = cit.get("unit", "") or ""
+    flag  = cit.get("flag") or ""
+    ts    = cit.get("timestamp")
 
-    card_class = "cit-card"
-    if flag and "abnormal" in flag.lower():
-        card_class += " abnormal"
-    elif src == "note":
-        card_class += " note"
-    elif src == "medication":
-        card_class += " med"
+    border_color = {
+        "lab":        "#ef4444" if flag and "abnormal" in flag.lower() else "#0ea5e9",
+        "medication": "#10b981",
+        "vital":      "#0ea5e9",
+        "diagnosis":  "#f59e0b",
+        "note":       "#8b5cf6",
+    }.get(src, "#0ea5e9")
 
-    flag_html = ""
-    if flag:
-        flag_html = f'<div class="flag-abnormal">⚠ {flag.upper()}</div>'
+    bg_color = {
+        "lab":        "#fff5f5" if flag and "abnormal" in flag.lower() else "#f0f9ff",
+        "medication": "#f0fdf4",
+        "vital":      "#f0f9ff",
+        "diagnosis":  "#fffbeb",
+        "note":       "#faf5ff",
+    }.get(src, "#f8fafc")
 
-    ts_html = ""
-    if ts:
-        ts_html = f'<div class="cit-meta">🕐 {fmt_datetime(ts)}</div>'
-
-    value_html = ""
+    lines = []
     if value:
-        value_str = f"{value} {unit}".strip()
-        value_html = f'<div class="cit-value">{value_str}</div>'
-
-    excerpt_html = ""
+        lines.append(f"**{value} {unit}".strip() + "**")
+    if flag:
+        lines.append(f"⚠ *{flag.upper()}*")
+    if ts:
+        lines.append(f"🕐 {fmt_datetime(ts)}")
     if src == "note" and cit.get("excerpt"):
-        excerpt = cit["excerpt"][:120] + ("…" if len(cit["excerpt"]) > 120 else "")
-        excerpt_html = f'<div class="cit-value" style="font-style:italic">"{excerpt}"</div>'
-        category = cit.get("category", "")
-        if category:
-            ts_html = f'<div class="cit-meta">📄 {category}</div>'
+        excerpt = cit["excerpt"][:100] + ("…" if len(cit["excerpt"]) > 100 else "")
+        lines.append(f'*"{excerpt}"*')
+        if cit.get("category"):
+            lines.append(f"📄 {cit['category']}")
+
+    body = "  \n".join(lines) if lines else ""
 
     st.markdown(
-        f"""
-        <div class="{card_class}">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-                <span class="cit-id">{icon} {cid}</span>
-                {flag_html}
-            </div>
-            <div class="cit-label">{label}</div>
-            {value_html}
-            {excerpt_html}
-            {ts_html}
-        </div>
-        """,
+        f"""<div style="background:{bg_color};border:1px solid #e2e8f0;
+            border-left:4px solid {border_color};border-radius:10px;
+            padding:0.6rem 0.75rem;margin-bottom:0.4rem">
+            <span style="font-size:0.68rem;font-weight:700;text-transform:uppercase;
+                letter-spacing:0.5px;color:#64748b">{icon} {cid}</span><br>
+            <span style="font-weight:600;font-size:0.88rem;color:#0f172a">{label}</span>
+        </div>""",
         unsafe_allow_html=True,
     )
+    if body:
+        with st.container():
+            st.markdown(
+                f"<div style='font-size:0.82rem;color:#374151;margin:-8px 0 6px 4px'>{body}</div>",
+                unsafe_allow_html=True,
+            )
