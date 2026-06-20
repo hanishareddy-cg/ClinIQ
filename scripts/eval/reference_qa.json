@@ -1,0 +1,107 @@
+[
+  {
+    "id": "q01",
+    "patient_id": 10006,
+    "query_type": "LABS",
+    "question": "What is the most recent creatinine value for this patient?",
+    "reference": "The most recent creatinine value is 5.9 mg/dL, which is flagged as abnormal. This indicates significant renal impairment and is consistent with the patient's sepsis diagnosis."
+  },
+  {
+    "id": "q02",
+    "patient_id": 10006,
+    "query_type": "LABS",
+    "question": "Are there any abnormal lab values?",
+    "reference": "Yes, several lab values are abnormal. Creatinine is elevated at 5.9 mg/dL indicating renal impairment. Calcium Total is low at 7.7 mg/dL indicating hypocalcemia. Phosphate is also flagged as abnormal at 2.6 mg/dL."
+  },
+  {
+    "id": "q03",
+    "patient_id": 10006,
+    "query_type": "DIAGNOSES",
+    "question": "What is the primary diagnosis for this patient?",
+    "reference": "The primary diagnosis for this patient is Sepsis."
+  },
+  {
+    "id": "q04",
+    "patient_id": 10006,
+    "query_type": "MEDS",
+    "question": "What medications is this patient on?",
+    "reference": "The patient is receiving multiple medications including Acetaminophen, Aspirin, and Atorvastatin among others."
+  },
+  {
+    "id": "q05",
+    "patient_id": 10006,
+    "query_type": "SUMMARY",
+    "question": "Summarize this patient's clinical condition.",
+    "reference": "This is a deceased female patient with a primary diagnosis of Sepsis. Key abnormal laboratory findings include an elevated creatinine of 5.9 mg/dL indicating renal impairment, low calcium at 7.7 mg/dL, and abnormal phosphate. The patient received medications including Acetaminophen, Aspirin, and Atorvastatin."
+  },
+  {
+    "id": "q06",
+    "patient_id": 10027,
+    "query_type": "LABS",
+    "question": "What are this patient's recent lab results?",
+    "reference": "Recent labs show several abnormal values: Creatinine 1.4 mg/dL (abnormal), Hematocrit 31.2% (abnormal, consistent with anemia), Hemoglobin 10.3 g/dL (abnormal), Urea Nitrogen 53 mg/dL (abnormal indicating reduced kidney clearance), and Chloride 110 mEq/L (abnormal). Potassium is 4.2 mEq/L and Sodium 145 mEq/L which are within limits."
+  },
+  {
+    "id": "q07",
+    "patient_id": 10027,
+    "query_type": "DIAGNOSES",
+    "question": "Does this patient have any cardiac conditions?",
+    "reference": "Yes, this patient has multiple cardiac conditions. The primary diagnosis is Congestive Heart Failure (CHF NOS), with additional diagnoses of Mitral valve disorder, Tricuspid valve disease, Other heart block, and Atrial fibrillation."
+  },
+  {
+    "id": "q08",
+    "patient_id": 10027,
+    "query_type": "MEDS",
+    "question": "What is the amiodarone dosing for this patient?",
+    "reference": "The patient is receiving Amiodarone HCl at multiple doses: 150 mg IV bolus, 400 mg orally (PO), and 600 mg IV drip, reflecting management of the patient's atrial fibrillation and heart block."
+  },
+  {
+    "id": "q09",
+    "patient_id": 10027,
+    "query_type": "LABS",
+    "question": "What is this patient's hemoglobin level?",
+    "reference": "The patient's hemoglobin is 10.3 g/dL, which is flagged as abnormal and below normal range, indicating anemia. The hematocrit is also low at 31.2%, consistent with this finding."
+  },
+  {
+    "id": "q10",
+    "patient_id": 10027,
+    "query_type": "SUMMARY",
+    "question": "Give me a clinical summary of this patient.",
+    "reference": "This is a deceased female patient whose primary diagnosis is Congestive Heart Failure (CHF NOS) with additional cardiac diagnoses including mitral valve disorder, tricuspid valve disease, and atrial fibrillation. Laboratory results show abnormal creatinine at 1.4 mg/dL, anemia with hemoglobin 10.3 g/dL and hematocrit 31.2%, and elevated urea nitrogen at 53 mg/dL. The patient is receiving Amiodarone at multiple doses for cardiac rhythm management along with Acetaminophen and Adenosine."
+  },
+  {
+    "id": "q11",
+    "patient_id": 10120,
+    "query_type": "LABS",
+    "question": "What are the lactate levels for this patient?",
+    "reference": "The patient has critically elevated lactate levels of 23.7 mmol/L and 23.6 mmol/L, both flagged as abnormal. These values are severely elevated above normal range indicating critical lactic acidosis, consistent with the patient's diagnoses of acute liver necrosis and kidney failure."
+  },
+  {
+    "id": "q12",
+    "patient_id": 10120,
+    "query_type": "LABS",
+    "question": "What do the blood gas results show?",
+    "reference": "The arterial blood gas results show a significantly abnormal pH of 7.15 and 7.28, indicating severe metabolic acidosis. The pCO2 is 40 mm Hg and pO2 is 102 mm Hg. The base excess is markedly negative at -15 and -7 mEq/L, consistent with severe metabolic acidosis from liver failure and elevated lactate."
+  },
+  {
+    "id": "q13",
+    "patient_id": 10120,
+    "query_type": "DIAGNOSES",
+    "question": "What are all the diagnoses for this patient?",
+    "reference": "The patient has five diagnoses: Acute necrosis of liver (primary), Acute kidney failure NOS (secondary), Acute respiratory failure (third), Grand mal status (fourth), and Defibrination syndrome (fifth)."
+  },
+  {
+    "id": "q14",
+    "patient_id": 10120,
+    "query_type": "MEDS",
+    "question": "What medications is this patient receiving?",
+    "reference": "The patient is receiving Acetylcysteine 20% at 14,000 mg and 7,000 mg orally, which is treatment for liver failure. Additionally, Calcium Chloride 1-2 gm IV and Calcium Gluconate 3-20 gm IV are being administered for electrolyte management, along with IV fluids D5 1/2NS and D5W."
+  },
+  {
+    "id": "q15",
+    "patient_id": 10120,
+    "query_type": "SUMMARY",
+    "question": "Summarize the clinical picture for this patient.",
+    "reference": "This is a critically ill deceased male patient with a primary diagnosis of Acute necrosis of liver complicated by Acute kidney failure, Acute respiratory failure, Grand mal status, and Defibrination syndrome. Laboratory findings are severely abnormal, with critically elevated lactate at 23.7 mmol/L and severe metabolic acidosis with pH as low as 7.15. The patient is being treated with high-dose Acetylcysteine for liver failure along with IV calcium supplementation and fluids."
+  }
+]
