@@ -1,8 +1,12 @@
 # ClinIQ — Clinical Record Intelligence Platform
 
-A **vectorless RAG** system that answers natural language questions about patient clinical records with cited, evidence-based answers.
+A clinician asking "what was this patient's creatinine trend over the last week?" should not have to open five different tabs, cross-reference lab reports, and manually piece together the answer. In most hospital systems, that's exactly what happens.
 
-> **No embeddings. No vector store.** PostgreSQL handles structured data; Elasticsearch BM25 handles free-text clinical notes. Every answer is grounded in retrieved records with bracketed citations like `[LAB-1]`, `[MED-2]`, `[NOTE-1]`.
+Clinical records are fragmented across structured tables (labs, vitals, medications, diagnoses) and unstructured free-text notes (discharge summaries, radiology reports, nursing assessments). Physicians spend an estimated 49% of their time on EHR documentation and data retrieval — time not spent with patients.
+
+**ClinIQ** is a retrieval-augmented generation system that unifies both data types into a single natural language interface. Ask a question, get a precise answer with every claim cited back to the exact source record.
+
+The system is deliberately **vectorless** — no embeddings, no vector store. PostgreSQL handles structured clinical data with typed queries; Elasticsearch BM25 handles free-text notes with term-based retrieval. This keeps the retrieval pipeline fully auditable: every retrieved fact can be traced to a row in the database or a document in the index, with no black-box similarity scores. In clinical settings, explainability is not optional.
 
 ---
 
